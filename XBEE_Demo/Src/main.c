@@ -58,6 +58,7 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART1_UART_Init(void);
 static void MX_RTC_Init(void);
+void printTime(void);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
@@ -65,7 +66,7 @@ static void MX_RTC_Init(void);
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
-
+extern void initialise_monitor_handles(void);
 /* USER CODE END 0 */
 
 int main(void)
@@ -88,7 +89,7 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-
+  initialise_monitor_handles();
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
@@ -96,23 +97,34 @@ int main(void)
   MX_USART1_UART_Init();
   MX_RTC_Init();
 
-  /* USER CODE BEGIN 2 */
+  printf("hello printf\n");
 
-  /* USER CODE END 2 */
 
-  /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
+
   while (1)
   {
-  /* USER CODE END WHILE */
-
-  /* USER CODE BEGIN 3 */
+	  printTime();
+	  HAL_Delay(1000);
 
   }
-  /* USER CODE END 3 */
-
 }
 
+void printTime()
+{
+	SysTick_VAL_CURRENT;
+
+	RTC_TimeTypeDef currentTime;
+	RTC_DateTypeDef currentDate;
+	HAL_RTC_WaitForSynchro(&hrtc);
+	HAL_RTC_GetTime(&hrtc, &currentTime, FORMAT_BIN);
+	HAL_RTC_GetDate(&hrtc,&currentDate,FORMAT_BIN);
+
+	char uartMsg[32] = "Time: ";
+	char time[16] = {0};
+	sprintf(time, "%d:%d:%d %d\n", currentTime.Hours, currentTime.Minutes, currentTime.Seconds, currentTime.SubSeconds);
+	strcat(uartMsg, time);
+	printf(uartMsg);
+}
 /** System Clock Configuration
 */
 void SystemClock_Config(void)
@@ -201,6 +213,7 @@ static void MX_RTC_Init(void)
   sTime.Hours = 0;
   sTime.Minutes = 0;
   sTime.Seconds = 0;
+  sTime.TimeFormat = RTC_HOURFORMAT_24;
   sTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
   sTime.StoreOperation = RTC_STOREOPERATION_RESET;
   if (HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BIN) != HAL_OK)
