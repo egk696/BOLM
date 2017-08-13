@@ -1,7 +1,8 @@
 /**
   ******************************************************************************
-  * File Name          : main.h
-  * Description        : This file contains the common defines of the application
+  * File Name          : TIM.c
+  * Description        : This file provides code for the configuration
+  *                      of the TIM instances.
   ******************************************************************************
   ** This notice applies to any and all portions of this file
   * that are not between comment pairs USER CODE BEGIN and
@@ -35,64 +36,96 @@
   *
   ******************************************************************************
   */
-/* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __MAIN_H
-#define __MAIN_H
-  /* Includes ------------------------------------------------------------------*/
 
-/* USER CODE BEGIN Includes */
+/* Includes ------------------------------------------------------------------*/
+#include "tim.h"
 
-/* USER CODE END Includes */
+/* USER CODE BEGIN 0 */
 
-/* Private define ------------------------------------------------------------*/
+/* USER CODE END 0 */
 
-#define PC14_OSC32_IN_Pin GPIO_PIN_14
-#define PC14_OSC32_IN_GPIO_Port GPIOC
-#define PC15_OSC32_OUT_Pin GPIO_PIN_15
-#define PC15_OSC32_OUT_GPIO_Port GPIOC
-#define PH0_OSC_IN_Pin GPIO_PIN_0
-#define PH0_OSC_IN_GPIO_Port GPIOH
-#define PH1_OSC_OUT_Pin GPIO_PIN_1
-#define PH1_OSC_OUT_GPIO_Port GPIOH
-#define B1_Pin GPIO_PIN_0
-#define B1_GPIO_Port GPIOA
-#define MPU_CS_Pin GPIO_PIN_4
-#define MPU_CS_GPIO_Port GPIOA
-#define MPU_SCL_Pin GPIO_PIN_5
-#define MPU_SCL_GPIO_Port GPIOA
-#define MPU_SDO_Pin GPIO_PIN_6
-#define MPU_SDO_GPIO_Port GPIOA
-#define MPU_SDI_Pin GPIO_PIN_7
-#define MPU_SDI_GPIO_Port GPIOA
-#define MPU_INT_Pin GPIO_PIN_4
-#define MPU_INT_GPIO_Port GPIOC
-#define MPU_INT_EXTI_IRQn EXTI4_IRQn
-#define LD4_Pin GPIO_PIN_8
-#define LD4_GPIO_Port GPIOC
-#define LD3_Pin GPIO_PIN_9
-#define LD3_GPIO_Port GPIOC
-#define SWDIO_Pin GPIO_PIN_13
-#define SWDIO_GPIO_Port GPIOA
-#define SWCLK_Pin GPIO_PIN_14
-#define SWCLK_GPIO_Port GPIOA
-#define SWO_Pin GPIO_PIN_3
-#define SWO_GPIO_Port GPIOB
+TIM_HandleTypeDef htim2;
 
-/* USER CODE BEGIN Private defines */
+/* TIM2 init function */
+void MX_TIM2_Init(void)
+{
+  TIM_ClockConfigTypeDef sClockSourceConfig;
+  TIM_MasterConfigTypeDef sMasterConfig;
 
-/* USER CODE END Private defines */
+  htim2.Instance = TIM2;
+  htim2.Init.Prescaler = 32000;
+  htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim2.Init.Period = 249;
+  htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
 
-void _Error_Handler(char *, int);
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim2, &sClockSourceConfig) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
 
-#define Error_Handler() _Error_Handler(__FILE__, __LINE__)
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+}
+
+void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* tim_baseHandle)
+{
+
+  if(tim_baseHandle->Instance==TIM2)
+  {
+  /* USER CODE BEGIN TIM2_MspInit 0 */
+
+  /* USER CODE END TIM2_MspInit 0 */
+    /* TIM2 clock enable */
+    __HAL_RCC_TIM2_CLK_ENABLE();
+
+    /* TIM2 interrupt Init */
+    HAL_NVIC_SetPriority(TIM2_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(TIM2_IRQn);
+  /* USER CODE BEGIN TIM2_MspInit 1 */
+
+  /* USER CODE END TIM2_MspInit 1 */
+  }
+}
+
+void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef* tim_baseHandle)
+{
+
+  if(tim_baseHandle->Instance==TIM2)
+  {
+  /* USER CODE BEGIN TIM2_MspDeInit 0 */
+
+  /* USER CODE END TIM2_MspDeInit 0 */
+    /* Peripheral clock disable */
+    __HAL_RCC_TIM2_CLK_DISABLE();
+
+    /* TIM2 interrupt Deinit */
+    HAL_NVIC_DisableIRQ(TIM2_IRQn);
+  /* USER CODE BEGIN TIM2_MspDeInit 1 */
+
+  /* USER CODE END TIM2_MspDeInit 1 */
+  }
+} 
+
+/* USER CODE BEGIN 1 */
+
+/* USER CODE END 1 */
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-*/ 
+  */
 
-#endif /* __MAIN_H */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

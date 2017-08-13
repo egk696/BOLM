@@ -12,8 +12,8 @@
 <targetDefinitions>
   <board id="stm32l100c-disco">
     <name>STM32L100C-DISCO</name>
-    <dbgIF>JTAG</dbgIF>
     <dbgIF>SWD</dbgIF>
+    <dbgIF>JTAG</dbgIF>
     <dbgDEV>ST-Link</dbgDEV>
     <mcuId>stm32l100rctx</mcuId>
   </board>

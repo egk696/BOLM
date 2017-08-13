@@ -39,36 +39,85 @@
 #include "main.h"
 #include "stm32l1xx_hal.h"
 #include "spi.h"
+#include "tim.h"
 #include "gpio.h"
 
-/* Private variables ---------------------------------------------------------*/
+/* USER CODE BEGIN Includes */
+
+/* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
+
+/* USER CODE BEGIN PV */
+/* Private variables ---------------------------------------------------------*/
+
+/* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 
+/* USER CODE BEGIN PFP */
+/* Private function prototypes -----------------------------------------------*/
+extern void initialise_monitor_handles(void);
+/* USER CODE END PFP */
+
+/* USER CODE BEGIN 0 */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
+	//if(htim->Instance == TIM2){
+		HAL_GPIO_TogglePin(GPIOC, LD4_Pin);
+	//}
+}
+/* USER CODE END 0 */
+
 int main(void)
 {
+
+  /* USER CODE BEGIN 1 */
+
+  /* USER CODE END 1 */
+
+  /* MCU Configuration----------------------------------------------------------*/
+
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
+
+  /* USER CODE BEGIN Init */
+  initialise_monitor_handles();
+  /* USER CODE END Init */
 
   /* Configure the system clock */
   SystemClock_Config();
 
+  /* USER CODE BEGIN SysInit */
+
+  /* USER CODE END SysInit */
+
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_SPI1_Init();
+  MX_TIM2_Init();
 
-  printf("hello");
+  /* USER CODE BEGIN 2 */
+  printf("+----B.O.L.M----+\n");
+  printf("----MPU  DEMO----\n");
+  if (HAL_TIM_Base_Start_IT(&htim2) != HAL_OK){
+	  printf("!  Error starting timer");
+  } else {
+	  printf("...Timer started");
+  }
+  /* USER CODE END 2 */
 
+  /* Infinite loop */
+  /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  HAL_GPIO_WritePin(GPIOC, LD4_Pin, GPIO_PIN_SET);
-	  HAL_Delay(250);
-	  HAL_GPIO_WritePin(GPIOC, LD4_Pin, GPIO_PIN_RESET);
-	  HAL_Delay(250);
+  /* USER CODE END WHILE */
+	  HAL_Delay(1000);
+	  HAL_GPIO_TogglePin(GPIOC, LD3_Pin);
+  /* USER CODE BEGIN 3 */
+
   }
+  /* USER CODE END 3 */
 
 }
 
@@ -124,6 +173,10 @@ void SystemClock_Config(void)
   HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
 }
 
+/* USER CODE BEGIN 4 */
+
+/* USER CODE END 4 */
+
 /**
   * @brief  This function is executed in case of error occurrence.
   * @param  None
@@ -158,3 +211,13 @@ void assert_failed(uint8_t* file, uint32_t line)
 }
 
 #endif
+
+/**
+  * @}
+  */ 
+
+/**
+  * @}
+*/ 
+
+/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
