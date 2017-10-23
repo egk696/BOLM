@@ -36,7 +36,7 @@
 #include "stm32l1xx_it.h"
 
 /* USER CODE BEGIN 0 */
-
+#include "mpu9250.h"
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
@@ -74,7 +74,8 @@ void SysTick_Handler(void)
 void EXTI4_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI4_IRQn 0 */
-
+  printf("A( X=%5d, Y=%5d, Z=%5d)\n", getMPU9250RawAccelX(), getMPU9250RawAccelY(), getMPU9250RawAccelZ());
+  HAL_GPIO_TogglePin(GPIOC, LD3_Pin);
   /* USER CODE END EXTI4_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_4);
   /* USER CODE BEGIN EXTI4_IRQn 1 */
@@ -88,7 +89,9 @@ void EXTI4_IRQHandler(void)
 void TIM2_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM2_IRQn 0 */
-
+  printf("A( X=%5d, Y=%5d, Z=%5d)\n", getMPU9250RawAccelX(), getMPU9250RawAccelY(), getMPU9250RawAccelZ());
+  printf("A( X=%f, Y=%f, Z=%f)\n", getMPU9250AccelX(), getMPU9250AccelY(), getMPU9250AccelZ());
+  HAL_GPIO_TogglePin(GPIOC, LD4_Pin);
   /* USER CODE END TIM2_IRQn 0 */
   HAL_TIM_IRQHandler(&htim2);
   /* USER CODE BEGIN TIM2_IRQn 1 */

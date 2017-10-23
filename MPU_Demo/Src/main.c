@@ -38,19 +38,19 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "stm32l1xx_hal.h"
-#include "spi.h"
+#include "i2c.h"
 #include "tim.h"
 #include "gpio.h"
 
 /* USER CODE BEGIN Includes */
-
+#include "mpu9250.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
-
+uint8_t mpu_whoami_id;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -62,18 +62,13 @@ extern void initialise_monitor_handles(void);
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
-	//if(htim->Instance == TIM2){
-		HAL_GPIO_TogglePin(GPIOC, LD4_Pin);
-	//}
-}
+
 /* USER CODE END 0 */
 
 int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
   /* USER CODE END 1 */
 
   /* MCU Configuration----------------------------------------------------------*/
@@ -94,16 +89,19 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_SPI1_Init();
+  MX_I2C1_Init();
   MX_TIM2_Init();
 
   /* USER CODE BEGIN 2 */
   printf("+----B.O.L.M----+\n");
   printf("----MPU  DEMO----\n");
+  initMPU9250(&hi2c1);
+  printf("MPU-9250 is %#x\n", getMPU9250WhoAmI(&hi2c1));
   if (HAL_TIM_Base_Start_IT(&htim2) != HAL_OK){
-	  printf("!  Error starting timer");
+	  printf("!  Error starting timer\n");
+	  return -1;
   } else {
-	  printf("...Timer started");
+	  printf("...Timer started\n");
   }
   /* USER CODE END 2 */
 
@@ -112,8 +110,7 @@ int main(void)
   while (1)
   {
   /* USER CODE END WHILE */
-	  HAL_Delay(1000);
-	  HAL_GPIO_TogglePin(GPIOC, LD3_Pin);
+
   /* USER CODE BEGIN 3 */
 
   }

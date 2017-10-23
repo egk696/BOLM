@@ -56,14 +56,6 @@
 #define PH1_OSC_OUT_GPIO_Port GPIOH
 #define B1_Pin GPIO_PIN_0
 #define B1_GPIO_Port GPIOA
-#define MPU_CS_Pin GPIO_PIN_4
-#define MPU_CS_GPIO_Port GPIOA
-#define MPU_SCL_Pin GPIO_PIN_5
-#define MPU_SCL_GPIO_Port GPIOA
-#define MPU_SDO_Pin GPIO_PIN_6
-#define MPU_SDO_GPIO_Port GPIOA
-#define MPU_SDI_Pin GPIO_PIN_7
-#define MPU_SDI_GPIO_Port GPIOA
 #define MPU_INT_Pin GPIO_PIN_4
 #define MPU_INT_GPIO_Port GPIOC
 #define MPU_INT_EXTI_IRQn EXTI4_IRQn
@@ -77,6 +69,10 @@
 #define SWCLK_GPIO_Port GPIOA
 #define SWO_Pin GPIO_PIN_3
 #define SWO_GPIO_Port GPIOB
+#define MPU_SCL_Pin GPIO_PIN_6
+#define MPU_SCL_GPIO_Port GPIOB
+#define MPU_SDA_Pin GPIO_PIN_7
+#define MPU_SDA_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 

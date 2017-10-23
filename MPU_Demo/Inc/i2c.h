@@ -1,14 +1,16 @@
 /**
   ******************************************************************************
-  * @file    stm32l1xx_hal_spi_ex.h
-  * @author  MCD Application Team
-  * @version 21-April-2017
-  * @date    V1.3.0
-  * @brief   Header file of SPI HAL Extended module.
+  * File Name          : I2C.h
+  * Description        : This file provides code for the configuration
+  *                      of the I2C instances.
   ******************************************************************************
-  * @attention
+  ** This notice applies to any and all portions of this file
+  * that are not between comment pairs USER CODE BEGIN and
+  * USER CODE END. Other portions of this file, whether 
+  * inserted by the user or by software development tools
+  * are owned by their respective copyright owners.
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2017 STMicroelectronics</center></h2>
+  * COPYRIGHT(c) 2017 STMicroelectronics
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -34,77 +36,45 @@
   *
   ******************************************************************************
   */
-
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __STM32L1xx_HAL_SPI_EX_H
-#define __STM32L1xx_HAL_SPI_EX_H
-
+#ifndef __i2c_H
+#define __i2c_H
 #ifdef __cplusplus
-extern "C" {
+ extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32l1xx_hal_def.h"
+#include "stm32l1xx_hal.h"
+#include "main.h"
 
-/** @addtogroup STM32L1xx_HAL_Driver
-  * @{
-  */
+/* USER CODE BEGIN Includes */
 
-/** @addtogroup SPIEx
-  * @{
-  */
+/* USER CODE END Includes */
 
-/* Exported types ------------------------------------------------------------*/
-/* Exported constants --------------------------------------------------------*/
-/** @defgroup SPIEx_Exported_Constants SPIEx Exported Constants
-  * @{
-  */
-#if defined (STM32L100xC) || defined (STM32L151xC) || defined (STM32L152xC) || defined (STM32L162xC) || defined (STM32L151xCA) || defined (STM32L151xD) || defined (STM32L152xCA) || defined (STM32L152xD) || defined (STM32L162xCA) || defined (STM32L162xD) || defined (STM32L151xE) || defined (STM32L151xDX) || defined (STM32L152xE) || defined (STM32L152xDX) || defined (STM32L162xE) || defined (STM32L162xDX)
-/** @defgroup SPI_TI_mode SPI TI mode
-  * @{
-  */
-#define SPI_TIMODE_DISABLE             (0x00000000U)
-#define SPI_TIMODE_ENABLE              SPI_CR2_FRF
+extern I2C_HandleTypeDef hi2c1;
 
-#define IS_SPI_TIMODE(MODE) (((MODE) == SPI_TIMODE_DISABLE) || \
-                             ((MODE) == SPI_TIMODE_ENABLE))
-/**
-  * @}
-  */
-#else
-/** @defgroup SPI_TI_mode SPI TI mode disable
-  * @brief  SPI TI Mode not supported for Category 1 and 2
-  * @{
-  */
-#define SPI_TIMODE_DISABLE             (0x00000000U)
+/* USER CODE BEGIN Private defines */
+/* USER CODE END Private defines */
 
-#define IS_SPI_TIMODE(MODE) ((MODE) == SPI_TIMODE_DISABLE)
-/**
-  * @}
-  */
-#endif
-/* Exported macros -----------------------------------------------------------*/
-/* Exported functions --------------------------------------------------------*/
-/**
-  * @}
-  */
+extern void _Error_Handler(char *, int);
 
-/**
-  * @}
-  */
+void MX_I2C1_Init(void);
 
-/**
-  * @}
-  */
+/* USER CODE BEGIN Prototypes */
 
-/**
-  * @}
-  */
+/* USER CODE END Prototypes */
 
 #ifdef __cplusplus
 }
 #endif
+#endif /*__ i2c_H */
 
-#endif /* __STM32L1xx_HAL_SPI_EX_H */
+/**
+  * @}
+  */
+
+/**
+  * @}
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
